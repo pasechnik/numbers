@@ -6,7 +6,7 @@ require_once 'Numbers.php';
  * Class NumbersTest
  *
  * @author "Vladimir Pasechnik" <vladimir.pasechnik@gamil.com>
- * @licence LGPL
+ * @license LGPL
  * @link http://www.hexgen.tk/
  *
  */
