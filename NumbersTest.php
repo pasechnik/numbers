@@ -60,8 +60,6 @@ class NumbersTest extends PHPUnit_Framework_TestCase
     ) {
 
         $this->assertEquals($c, $this->numbers()->getCommonPart([$a, $b]));
-//        $my = new MyClass();
-//        $this->assertEquals($c, $my->power($a, $b));
     }
 
     public function providerCommonPart()
