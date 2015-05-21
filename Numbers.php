@@ -15,21 +15,21 @@ class Numbers
      * @param string $_input
      * @return array
      */
-    public function prefix($_input, $_a)
+    public function prefix($_input)
     {
         $result = [];
         $pairs = explode(';', $_input);
         foreach ($pairs as $pair) {
             list($start, $end) = explode('-', $pair);
-            $result += $this->calc($start, $end, $_a);
+            $result = array_merge($result, $this->calc($start, $end));
         }
 
-//        exit();
+//        $result = array_unique($result);
 
         return $result;
     }
 
-    public function calc($start, $end, $_a)
+    public function calc($start, $end)
     {
         $result = [];
 
@@ -50,48 +50,29 @@ class Numbers
 
         if ($_e - $_s < 9) {
             for ($i = $_s; $i <= $_e; $i++) {
-                $result[] = $common . $i;
+                $result[] = $common . str_pad($i,strlen($_s),'0', STR_PAD_LEFT);
             }
 
             return $result;
         }
 
-        prn($common, $_s, $_e);
+        if ($start !== substr($start, 0, -1) . '0') {
+            $result = $this->calc($start, substr($start, 0, -1) . '9');
+            $start = substr($start, 0, -2) . ((int)substr($start, -2, 1) + 1) . '0';
+        }
+
+        $resultEnd = [];
+        if ($end !== substr($end, 0, -1) . '9') {
+            $eStart = substr($end, 0, -1) . '0';
+            $resultEnd = $this->calc($eStart, $end);
+            $end = substr($end, 0, -2) . (substr($end, -2, 1) - 1) . '9';
+        }
+
+        $result = array_merge($result, $this->calc($start, $end));
+        $result = array_merge($result, $resultEnd);
 
         return $result;
 
-        echo "\n";
-        $inStart = str_pad($common, strlen($start), '0');
-        $inEnd = str_pad($common, strlen($end), '9');
-
-        if ($inStart == $start && $inEnd == $end) {
-            $result[] = $common;
-            prn($common, $inStart, $inEnd, $_a);
-
-            return $result;
-        }
-
-
-        echo "\n";
-        prn($common, $inStart, $inEnd);
-
-        $inStart = $common . '0';
-        $inEnd = $common . '9';
-
-        if ($inStart != substr($start, 0, strlen($inStart))) {
-            $inStart = substr($start, 0, strlen($inStart));
-        }
-
-        if ($inEnd != substr($end, 0, strlen($inEnd))) {
-            $inEnd = substr($end, 0, strlen($inEnd));
-        }
-
-        prn();
-        prn($common, $inStart, $inEnd, $_a);
-        exit();
-
-//            print_r([$start, $end, (int)$start & (int)$end]);
-        return $result;
     }
 
     /**
